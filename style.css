@@ -1,0 +1,23 @@
+body {
+    box-sizing: border-box;
+    background-color: #1e1e1e;
+    color: white;
+}
+
+.selection-list {
+    display: flex;
+    gap: 1em;
+
+}
+
+.selection-list button {
+    border-radius: 0.4em;
+    border: none;
+    background-color: #393939;
+    padding: 0.8em;
+    font-size: 3rem;
+}
+
+.selection-list button:active {
+    scale: 1.1;
+}

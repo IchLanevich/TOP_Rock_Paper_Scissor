@@ -1,3 +1,6 @@
+let playerScore = 0;
+let computerScore = 0;
+
 const getComputerChoice = () => {
   const choices = {
     1: "Rock",
@@ -13,7 +16,6 @@ const getComputerChoice = () => {
 const playRound = (playerSelection, computerSelection) => {
   playerSelection = playerSelection.toLowerCase();
   computerSelection = computerSelection.toLowerCase();
-
   const rules = {
     rock: "scissors",
     paper: "rock",
@@ -36,32 +38,43 @@ const playRound = (playerSelection, computerSelection) => {
   }
 };
 
-function game() {
-  let playerScore = 0;
-  let computerScore = 0;
+const buttons = document.querySelectorAll("button");
+const matchResultElement = document.querySelector("#matchResult");
+const resultElement = document.querySelector("#result");
+const playerScoreElement = document.querySelector("#playerScore");
+const computerScoreElement = document.querySelector("#computerScore");
 
-  for (let round = 1; round <= 5; round++) {
-    let playerSelection = prompt(
-      "Round " + round + ": Enter your selection (rock, paper, or scissors):"
-    );
-    let computerSelection = getComputerChoice();
-    const result = playRound(playerSelection, computerSelection);
+let matchResult = "";
+let isGameOver = false;
 
-    if (result.includes("Win")) {
-      playerScore += 1;
-    } else if (result.includes("Lose")) {
-      computerScore += 1;
-    }
+buttons.forEach((button) =>
+  button.addEventListener("click", (e) => handleClick(e))
+);
+
+const handleClick = (e) => {
+  const playerSelection = e.target.getAttribute("id");
+  let result = playRound(playerSelection, getComputerChoice());
+  resultElement.textContent = result;
+
+  matchResultElement.textContent = "";
+  
+  if (result.includes("Win")) playerScore += 1;
+  if (result.includes("Lose")) computerScore += 1;
+
+  playerScoreElement.textContent = playerScore;
+  computerScoreElement.textContent = computerScore;
+
+  if (playerScore === 5) {
+    matchResult = "You Won!";
+    playerScore = 0;
+    computerScore = 0;
+    matchResultElement.textContent = matchResult;
+    return;
+  } else if (computerScore === 5) {
+    matchResult = "You Lose!";
+    playerScore = 0;
+    computerScore = 0;
+    matchResultElement.textContent = matchResult;
+    return;
   }
-
-  let matchResultMessage = "It's a tie!";
-  if (playerScore > computerScore) {
-    matchResultMessage = "Congratulations! You win the game!";
-  } else if (playerScore < computerScore) {
-    matchResultMessage = "Sorry, you lose the game.";
-  }
-
-  return matchResultMessage;
-}
-
-game();
+};
